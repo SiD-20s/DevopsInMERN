@@ -12,15 +12,16 @@ const tasksRouter = require("./routes/tasks");
 app.use("/api/tasks", tasksRouter);
 
 // Connect to MongoDB
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB connected"))
-  .catch((err) => {
+(async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log("MongoDB connected");
+  } catch (err) {
     console.error("MongoDB connection error:", err);
     process.exit(1);
-  });
-.then(() => console.log("MongoDB connected"))
-.catch((err) => console.log(err));
+  }
+})();
+
 
 // Start server
 const PORT = process.env.PORT || 5000;
