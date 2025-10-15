@@ -9,20 +9,20 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
-        image: mongo:latest
-        ports: [27017:27017]
+      image: mongo:latest
+      ports: [27017:27017]
 
-        steps:
+      steps:
         - name: checkout Repository
           uses: actions/checkout@
-          
+
         - name: Setup Node.js
           uses: actions/setup-node@v3
           with:
-            node-version: '18'
-          
+            node-version: "18"
+
         - name: wait for mongo to be ready
-          run: | 
+          run: |
             until nc -z localhost 27017; do 
               echo "Waiting for mongo to be ready..."
               sleep 2 
@@ -36,7 +36,7 @@ jobs:
             node seedTasksData.js
   test:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: checkout Repository
         uses: actions/checkout@v3
@@ -44,16 +44,12 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: "18"
 
       - name: Install dependencies
         working-directory: ./backend
         run: npm install
-        
+
       - name: Run tests
         working-directory: ./backend
         run: npm run test
-        
-
-
-       
