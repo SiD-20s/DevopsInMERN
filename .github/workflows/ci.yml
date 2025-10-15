@@ -2,14 +2,14 @@ name: MERN CI
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
 
 jobs:
   mongo-init-test:
     runs-on: ubuntu-latest
 
     env:
-      PORT: ${{ secrets.PORT}}
+      PORT: ${{ secrets.PORT }}
       MONGO_URI: ${{ secrets.MONGO_URI }}
 
     services:
@@ -17,41 +17,39 @@ jobs:
         image: mongo:latest
         ports: ['27017:27017']
 
-      steps:
-        - name: checkout Repository
-          uses: actions/checkout@
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
-        - name: Setup Node.js
-          uses: actions/setup-node@v3
-          with:
-            node-version: "18"
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
 
-        - name: wait for mongo to be ready
-          run: |
-            until nc -z localhost 27017; do 
-              echo "Waiting for mongo to be ready..."
-              sleep 2 
-            done
-              echo "Mongo is ready"
+      - name: Wait for Mongo to be ready
+        run: |
+          until nc -z localhost 27017; do 
+            echo "Waiting for MongoDB to be ready..."
+            sleep 2 
+          done
+          echo "MongoDB is ready"
 
-        - name: seed mongoDB
-          working-directory: ./backend
-          run: |
-            npm install
-            node seedTasksData.js
+      - name: Seed MongoDB
+        working-directory: ./backend
+        run: |
+          npm install
+          node seedTasksData.js
 
-        - name: Run tests
-          working-directory: ./backend
-          run: npm run test
+      - name: Run Tests
+        working-directory: ./backend
+        run: npm run test
 
   test:
     runs-on: ubuntu-latest
-    needs: mongo-init
-
-    
+    needs: mongo-init-test
 
     steps:
-      - name: checkout Repository
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
       - name: Setup Node.js
@@ -62,5 +60,6 @@ jobs:
       - name: Install dependencies
         working-directory: ./backend
         run: npm install
+
 
       
