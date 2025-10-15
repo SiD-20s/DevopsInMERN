@@ -18,5 +18,5 @@ describe("GET /api/tasks", () => {
 
 afterAll(async () => {
   await mongoose.connection.close();
-  await server.close();
+  server.close();
 });

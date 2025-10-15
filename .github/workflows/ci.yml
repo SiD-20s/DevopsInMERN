@@ -42,5 +42,8 @@ jobs:
 
       - name: Run Tests
         working-directory: ./backend
-        run: npm run test
+        run: |
+    export MONGO_URI=mongodb://127.0.0.1:27017/mern-app
+    npm install
+    npm run test
 
